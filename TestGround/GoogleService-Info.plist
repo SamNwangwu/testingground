@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>151361300095-pvu1fku82vukg073a4u78vpm9uve92kg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.151361300095-pvu1fku82vukg073a4u78vpm9uve92kg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD6bmUARKBCK-iH2ApG_Nre6KZZK-YmiTo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>151361300095</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.EatOut</string>
+	<key>PROJECT_ID</key>
+	<string>eatout-2e24a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>eatout-2e24a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:151361300095:ios:f5f610fafab573587a414a</string>
+</dict>
+</plist>

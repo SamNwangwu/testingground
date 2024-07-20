@@ -4,14 +4,31 @@
 //
 //  Created by User on 20/07/2024.
 //
+import SwiftUI
+import GooglePlaces
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    GMSPlacesClient.provideAPIKey("AIzaSyDZdzqDwtaIe2lesCU9vX74tpDgixpqzyY")
+    return true
+  }
+}
 
 import SwiftUI
 
 @main
 struct TestGroundApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var isExpanded = false
+        
+        var body: some Scene {
+            WindowGroup {
+                ReviewRatingView(
+                    placeName: "Test",
+                    placeLocation: "TestLocation",
+                    isExpanded: $isExpanded
+                )
+            }
         }
     }
-}
