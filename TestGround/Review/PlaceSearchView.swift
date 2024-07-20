@@ -96,7 +96,6 @@ struct PlaceSearchView: View {
                     .scrollContentBackground(.hidden)
                 }
             }
-            .navigationTitle("Search")
         }
         .interactiveDismissDisabled()
         .environmentObject(locationService) // Provide the locationService as an environment object

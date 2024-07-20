@@ -24,11 +24,7 @@ struct TestGroundApp: App {
         
         var body: some Scene {
             WindowGroup {
-                ReviewRatingView(
-                    placeName: "Test",
-                    placeLocation: "TestLocation",
-                    isExpanded: $isExpanded
-                )
+                GalleryView()
             }
         }
     }

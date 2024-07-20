@@ -10,93 +10,134 @@ import AVFoundation
 import Photos
 
 struct CameraView: View {
+    @Binding var foodQualityRating: CGFloat
+    @Binding var ambianceRating: CGFloat
+    @Binding var serviceRating: CGFloat
+    @Binding var valueRating: CGFloat
     @State private var isFlashOn = false
     @State private var isUsingFrontCamera = false
     @State private var selectedOption: String = "Photo"
     @State private var mostRecentPhoto: UIImage?
+    @State private var navigateToGallery = false
     var returnToReview: (() -> Void)?
 
     var body: some View {
-        ZStack {
-            CameraPreview(isUsingFrontCamera: $isUsingFrontCamera)
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                HStack {
-                    VStack {
+        NavigationStack {
+            ZStack {
+                CameraPreview(isUsingFrontCamera: $isUsingFrontCamera)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    HStack {
                         Button(action: {
-                            // Handle flash
-                            isFlashOn.toggle()
+                            returnToReview?()
                         }) {
-                            Image(systemName: isFlashOn ? "bolt.fill" : "bolt")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .padding()
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 24))
+                                Text("Back")
+                                    .font(.system(size: 18))
+                            }
+                            .foregroundColor(.white)
+                            .padding()
+                            .padding(.top, -100)
                         }
-                        Button(action: {
-                            // Handle camera flip
-                            isUsingFrontCamera.toggle()
-                        }) {
-                            Image(systemName: "camera.rotate")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-                        Button(action: {
-                            // Handle timer
-                        }) {
-                            Image(systemName: "timer")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .padding()
-                        }
-                    }
-                }
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        // Action for taking photo/video
-                    }) {
-                        Circle()
-                            .strokeBorder(Color.white, lineWidth: 4)
-                            .frame(width: 70, height: 70)
-                    }
-                    .padding(.bottom, 30)
-
-                    Spacer()
-
-                    if let recentPhoto = mostRecentPhoto {
-                        Image(uiImage: recentPhoto)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 50, height: 50)
-                            .clipShape(Rectangle())
-                            .cornerRadius(10)
-                            .padding(.bottom, 30)
-                            .padding(.trailing, 10)
-                    }
-                }
-
-                HStack {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 20) {
-                            ForEach(["Photo", "15s", "60s", "5m"], id: \.self) { option in
-                                Text(option)
-                                    .foregroundColor(selectedOption == option ? .white : .gray)
-                                    .fontWeight(selectedOption == option ? .bold : .regular)
-                                    .onTapGesture {
-                                        selectedOption = option
-                                    }
+                        Spacer()
+                        VStack {
+                            Button(action: {
+                                // Handle flash
+                                isFlashOn.toggle()
+                            }) {
+                                Image(systemName: isFlashOn ? "bolt.fill" : "bolt")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.white)
+                                    .padding()
+                            }
+                            Button(action: {
+                                // Handle camera flip
+                                isUsingFrontCamera.toggle()
+                            }) {
+                                Image(systemName: "camera.rotate")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.white)
+                                    .padding()
+                            }
+                            Button(action: {
+                                // Handle timer
+                            }) {
+                                Image(systemName: "timer")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(.white)
+                                    .padding()
                             }
                         }
                     }
-                    .padding(.bottom, 30)
+                    Spacer()
+                    HStack {
+                        Button(action: {
+                            navigateToGallery = true
+                        }) {
+                            if let recentPhoto = mostRecentPhoto {
+                                Image(uiImage: recentPhoto)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Rectangle())
+                                    .cornerRadius(10)
+                                    .padding(.bottom, -400)
+                                    .padding(.top, 20)
+                                    .padding(.leading, 20)
+                            } else {
+                                Rectangle()
+                                    .foregroundStyle(.black)
+                                    .frame(width: 50, height: 50)
+                                    .clipShape(Rectangle())
+                                    .cornerRadius(10)
+                                    .padding(.bottom, -400)
+                                    .padding(.top, 20)
+                                    .padding(.leading, 20)
+                            }
+                        }
+                        Spacer()
+                        VStack {
+                            HStack {
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 20) {
+                                        ForEach(["Photo", "15s", "60s", "5m"], id: \.self) { option in
+                                            Text(option)
+                                                .foregroundStyle(.white)
+                                                .fontWeight(selectedOption == option ? .bold : .regular)
+                                                .onTapGesture {
+                                                    selectedOption = option
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                            .padding(.leading, 92)
+
+                            Button(action: {
+                                // Action for taking photo/video
+                            }) {
+                                Circle()
+                                    .strokeBorder(Color.white, lineWidth: 4)
+                                    .background(Circle().foregroundColor(Color.red))
+                                    .frame(width: 70, height: 70)
+                                    .padding(.trailing, 70)
+                            }
+                            .padding(.bottom, 80)
+                        }
+                        Spacer()
+                    }
+                }
+                .navigationDestination(isPresented: $navigateToGallery) {
+                    GalleryView()
                 }
             }
+            .onAppear {
+                fetchMostRecentPhoto()
+            }
         }
-        .onAppear {
-            fetchMostRecentPhoto()
-        }
+        .navigationBarBackButtonHidden(true)
     }
 
     private func fetchMostRecentPhoto() {
@@ -113,7 +154,9 @@ struct CameraView: View {
             options.isSynchronous = true
 
             imageManager.requestImage(for: asset, targetSize: CGSize(width: 50, height: 50), contentMode: .aspectFill, options: options) { image, _ in
-                self.mostRecentPhoto = image
+                DispatchQueue.main.async {
+                    self.mostRecentPhoto = image
+                }
             }
         }
     }
@@ -206,5 +249,20 @@ struct CameraPreview: UIViewRepresentable {
         captureSession.commitConfiguration()
     }
 }
+//
+//struct CameraView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CameraView(
+//            foodQualityRating: .constant(0.0),
+//            ambianceRating: .constant(0.0),
+//            serviceRating: .constant(0.0),
+//            valueRating: .constant(0.0)
+//        )
+//    }
+//}
+
+
+
+
 
 

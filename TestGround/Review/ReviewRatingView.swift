@@ -1,10 +1,3 @@
-//
-//  ReviewRatingView.swift
-//  TestGround
-//
-//  Created by User on 20/07/2024.
-//
-
 import SwiftUI
 
 struct ReviewRatingView: View {
@@ -19,7 +12,6 @@ struct ReviewRatingView: View {
     @Namespace private var animationNamespace
     @State private var showAverageRating = false
     @State private var showCameraView = false
-    @Environment(\.presentationMode) var presentationMode
     @Binding var isExpanded: Bool
     let starWidth: CGFloat = 20
     let initialStarWidth: CGFloat = 30 // Adjusted initial size to fit better
@@ -29,24 +21,24 @@ struct ReviewRatingView: View {
             VStack {
                 HStack {
                     Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+                        // Handle navigation back action
                     }) {
-                        Image(systemName: "xmark")
+                        Image(systemName: "chevron.left")
                             .font(.system(size: 24))
-                            .foregroundColor(.black)
-                            .padding()
+                        Text("Back")
+                            .font(.system(size: 18))
                     }
+                    .foregroundColor(.black)
+                    .padding()
                     Spacer()
                     if currentStep >= 4 {
-                        NavigationLink(destination: CameraView(returnToReview: {
-                            presentationMode.wrappedValue.dismiss()
-                        })) {
+                        NavigationLink(destination: GalleryView()) {
                             Text("Next")
                                 .padding()
                         }
                     }
                 }
-
+                
                 VStack(spacing: 4) {
                     Text(placeName)
                         .font(.title)
@@ -113,7 +105,7 @@ struct ReviewRatingView: View {
                 if showAverageRating {
                     VStack {
                         Text("OVERALL RATING")
-                            .font(.system(size: 14)) // Set custom font size
+                            .font(.system(size: 16)) // Set custom font size
                             .foregroundColor(.gray)
                             .padding(.bottom, 2)
                             .frame(maxWidth: .infinity, alignment: .center) // Center align the text
@@ -133,7 +125,7 @@ struct ReviewRatingView: View {
 
                 // Instruction for the next step
                 if currentStep >= 4 {
-                    Text("Next, add photos/videos to your review.")
+                    Text("Next, you can take or upload photos/videos.")
                         .font(.footnote)
                         .foregroundColor(.gray)
                         .padding(.bottom)
@@ -143,11 +135,7 @@ struct ReviewRatingView: View {
             .animation(.easeInOut, value: currentStep)
             .animation(.easeInOut, value: showAverageRating)
         }
-        .sheet(isPresented: $showCameraView) {
-            CameraView(returnToReview: {
-                showCameraView = false
-            })
-        }
+        .navigationBarBackButtonHidden(true)
     }
 
     private func headerTitle(for step: Int) -> String {
@@ -232,10 +220,6 @@ struct ReviewRatingView: View {
     }
 }
 
-
-
-
-
 struct RatingHeader: View {
     let title: String
     let subheadline: String
@@ -266,11 +250,10 @@ struct SelectedRatingHeader: View {
             .frame(maxWidth: .infinity, alignment: .center) // Center align the text
     }
 }
- 
 
 struct ReviewRatingView_Previews: PreviewProvider {
     @State static var isExpanded = false
-    
+
     static var previews: some View {
         ReviewRatingView(placeName: "Test Place", placeLocation: "Test Location", isExpanded: $isExpanded)
     }
