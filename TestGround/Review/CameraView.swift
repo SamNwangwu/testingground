@@ -1,25 +1,13 @@
-//
-//  CameraView.swift
-//  TestGround
-//
-//  Created by User on 20/07/2024.
-//
-
 import SwiftUI
 import AVFoundation
 import Photos
 
 struct CameraView: View {
-    @Binding var foodQualityRating: CGFloat
-    @Binding var ambianceRating: CGFloat
-    @Binding var serviceRating: CGFloat
-    @Binding var valueRating: CGFloat
     @State private var isFlashOn = false
     @State private var isUsingFrontCamera = false
     @State private var selectedOption: String = "Photo"
     @State private var mostRecentPhoto: UIImage?
-    @State private var navigateToGallery = false
-    var returnToReview: (() -> Void)?
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
@@ -28,19 +16,6 @@ struct CameraView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     HStack {
-                        Button(action: {
-                            returnToReview?()
-                        }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 24))
-                                Text("Back")
-                                    .font(.system(size: 18))
-                            }
-                            .foregroundColor(.white)
-                            .padding()
-                            .padding(.top, -100)
-                        }
                         Spacer()
                         VStack {
                             Button(action: {
@@ -73,30 +48,6 @@ struct CameraView: View {
                     }
                     Spacer()
                     HStack {
-                        Button(action: {
-                            navigateToGallery = true
-                        }) {
-                            if let recentPhoto = mostRecentPhoto {
-                                Image(uiImage: recentPhoto)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(Rectangle())
-                                    .cornerRadius(10)
-                                    .padding(.bottom, -400)
-                                    .padding(.top, 20)
-                                    .padding(.leading, 20)
-                            } else {
-                                Rectangle()
-                                    .foregroundStyle(.black)
-                                    .frame(width: 50, height: 50)
-                                    .clipShape(Rectangle())
-                                    .cornerRadius(10)
-                                    .padding(.bottom, -400)
-                                    .padding(.top, 20)
-                                    .padding(.leading, 20)
-                            }
-                        }
                         Spacer()
                         VStack {
                             HStack {
@@ -122,15 +73,36 @@ struct CameraView: View {
                                     .strokeBorder(Color.white, lineWidth: 4)
                                     .background(Circle().foregroundColor(Color.red))
                                     .frame(width: 70, height: 70)
-                                    .padding(.trailing, 70)
                             }
                             .padding(.bottom, 80)
                         }
                         Spacer()
                     }
                 }
-                .navigationDestination(isPresented: $navigateToGallery) {
-                    GalleryView()
+                
+                VStack {
+                    HStack {
+                        ZStack {
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                HStack {
+                                    Image(systemName: "chevron.left")
+                                        .font(.system(size: 24))
+                                    Text("Back")
+                                        .font(.system(size: 18))
+                                }
+                                .foregroundColor(.white)
+                                .padding()
+                            }
+                        }
+                        .background(Color.clear)
+                        .frame(width: 100, height: 100)
+                        .padding(.top, -25)
+                        .padding(.leading, 2)
+                        Spacer()
+                    }
+                    Spacer()
                 }
             }
             .onAppear {
@@ -249,20 +221,9 @@ struct CameraPreview: UIViewRepresentable {
         captureSession.commitConfiguration()
     }
 }
-//
-//struct CameraView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CameraView(
-//            foodQualityRating: .constant(0.0),
-//            ambianceRating: .constant(0.0),
-//            serviceRating: .constant(0.0),
-//            valueRating: .constant(0.0)
-//        )
-//    }
-//}
 
-
-
-
-
-
+struct CameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView()
+    }
+}
