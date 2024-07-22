@@ -6,6 +6,7 @@
 //
 import SwiftUI
 import GooglePlaces
+import Photos
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -15,16 +16,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   }
 }
 
-import SwiftUI
-
 @main
 struct TestGroundApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var isExpanded = false
-        
-        var body: some Scene {
-            WindowGroup {
+    @State private var selectedAssets = [PHAsset]() // Provide an initial empty array
+
+    var body: some Scene {
+        WindowGroup {
+            NavigationView {
                 GalleryView()
             }
         }
     }
+}
