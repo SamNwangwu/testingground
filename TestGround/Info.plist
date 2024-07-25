@@ -10,5 +10,9 @@
 	<string>We need access to your photo library to show and select photos.</string>
 	<key>GMSPlacesClient</key>
 	<string>AIzaSyDZdzqDwtaIe2lesCU9vX74tpDgixpqzyY</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show nearby eat-out venues.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show nearby eat-out venues.</string>
 </dict>
 </plist>

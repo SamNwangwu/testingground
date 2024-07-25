@@ -19,11 +19,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct TestGroundApp: App {
     @State private var selectedAssets = [PHAsset]() // Provide an initial empty array
+    @State private var averageRating: Double = 10
+    
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                GalleryView()
+             ContentView()
             }
         }
     }
