@@ -1,27 +1,20 @@
-//
-//  MenuOptionsList.swift
-//  TestGround
-//
-//  Created by User on 25/07/2024.
-//
-
 import SwiftUI
 
 struct MenuOptionsList: View {
     @Binding var selectedOption: MenuBarOptions
     @Binding var currentOption: MenuBarOptions
     @Namespace var animation
-    
+
     var body: some View {
         ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators:  false) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 30) {
                     ForEach(MenuBarOptions.allCases, id: \.self) { item in
-                    VStack {
+                        VStack {
                             Text(item.title)
                                 .foregroundColor(item == currentOption ? .black : .gray)
                                 .fontWeight(item == currentOption ? .semibold : .regular)
-                            
+
                             if currentOption == item {
                                 Capsule()
                                     .fill(.black)
@@ -35,12 +28,13 @@ struct MenuOptionsList: View {
                                     .padding(.horizontal, -10)
                             }
                         }
-                    .onTapGesture {
-                        withAnimation(.easeInOut) {
-                            self.selectedOption = item
-                            proxy.scrollTo(item, anchor: .topTrailing)
+                        .onTapGesture {
+                            withAnimation(.easeInOut) {
+                                self.selectedOption = item
+                                proxy.scrollTo(item, anchor: .topTrailing)
+                                print("Menu Option Tapped: \(item)")
+                            }
                         }
-                    }
                     }
                     .onChange(of: currentOption) { _ in
                         proxy.scrollTo(currentOption, anchor: .topTrailing)
@@ -50,7 +44,3 @@ struct MenuOptionsList: View {
         }
     }
 }
-
-//#Preview {
-//    MenuOptionsList(selectedOption: .constant(.food))
-//}

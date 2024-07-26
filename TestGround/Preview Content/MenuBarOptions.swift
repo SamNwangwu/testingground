@@ -12,103 +12,187 @@ enum MenuBarOptions: Int, CaseIterable {
         case .wine: return "Wine"
         }
     }
-    
-    var foodItems: [FoodItem] {
-        switch self {
-        case .food:
-            return [
-                FoodItem(title: "Natural Oysters", description: "Delicious natural oysters", price: "21.00/42.00 (x6/x12)", imageName: "oysters"),
-                FoodItem(title: "Roasted scallops", description: "White port, garlic butter", price: "21.00", imageName: "scallops"),
-                FoodItem(title: "Hawksmoor smoked salmon", description: "Guinness bread", price: "15.00", imageName: "smoked_salmon"),
-                FoodItem(title: "Devon crab on toast", description: "Cucumber salad", price: "18.00", imageName: "crab_toast"),
-                FoodItem(title: "Potted beef & bacon", description: "Yorkshires & onion gravy", price: "11.00", imageName: "potted_beef"),
-                FoodItem(title: "Fillet carpaccio", description: "Pickled chestnut mushrooms, parmesan", price: "15.00", imageName: "carpaccio"),
-                FoodItem(title: "Bone marrow & onions", description: "Sourdough toast", price: "11.00", imageName: "bone_marrow"),
-                FoodItem(title: "Old Spot belly ribs", description: "Vinegar slaw", price: "15.00", imageName: "belly_ribs"),
-                FoodItem(title: "Bitter leaf salad", description: "Devon blue & candied pecans", price: "11.50", imageName: "bitter_leaf_salad"),
-                FoodItem(title: "Summer salad", description: "Peas, sugar snaps, cashew ricotta", price: "10.50/18.50", imageName: "summer_salad")
-            ]
-        case .cocktails:
-            return [
-                FoodItem(title: "The Sacred Six", description: "Ultimate Steakhouse Cocktails", price: "12.50", imageName: "cocktail1"),
-                FoodItem(title: "Ultimate Steakhouse Cocktails", description: "Classic cocktails", price: "12.00", imageName: "cocktail2"),
-                FoodItem(title: "Time & A Place", description: "Unique blends", price: "13.00", imageName: "cocktail3"),
-                FoodItem(title: "Martini", description: "Gin, vermouth, olive", price: "10.00", imageName: "martini"),
-                FoodItem(title: "Margarita", description: "Tequila, lime, salt", price: "11.00", imageName: "margarita"),
-                FoodItem(title: "Old Fashioned", description: "Whiskey, bitters, sugar", price: "12.00", imageName: "old_fashioned"),
-                FoodItem(title: "Negroni", description: "Gin, vermouth, Campari", price: "12.50", imageName: "negroni"),
-                FoodItem(title: "Mojito", description: "Rum, mint, lime, soda", price: "10.50", imageName: "mojito"),
-                FoodItem(title: "Daiquiri", description: "Rum, lime, sugar", price: "10.00", imageName: "daiquiri")
-            ]
-        case .wine:
-            return [
-                FoodItem(title: "Red Wine", description: "A selection of red wines", price: "30.00", imageName: "red_wine"),
-                FoodItem(title: "White Wine", description: "A selection of white wines", price: "28.00", imageName: "white_wine"),
-                FoodItem(title: "Rosé", description: "A selection of rosé wines", price: "25.00", imageName: "rose_wine"),
-                FoodItem(title: "Chardonnay", description: "A rich white wine", price: "32.00", imageName: "chardonnay"),
-                FoodItem(title: "Cabernet Sauvignon", description: "A full-bodied red wine", price: "35.00", imageName: "cabernet_sauvignon"),
-                FoodItem(title: "Merlot", description: "A soft red wine", price: "28.00", imageName: "merlot"),
-                FoodItem(title: "Pinot Grigio", description: "A light white wine", price: "26.00", imageName: "pinot_grigio"),
-                FoodItem(title: "Sauvignon Blanc", description: "A crisp white wine", price: "30.00", imageName: "sauvignon_blanc")
-            ]
+}
+
+enum SubMenuOptions: String, CaseIterable {
+    // Food submenus
+        case lunchDinner = "Lunch & Dinner"
+        case lunchSpecials = "Lunch Specials"
+        case puddings = "Puddings"
+        case courses = "2/3 Courses £29/£33"
+        case sundayRoast = "Sunday Roast"
+        case sharingMenu = "Sharing Menu"
+        
+        // Cocktails submenus
+        case sacredSix = "The Sacred Six"
+        case ultimateSteakhouseCocktails = "Ultimate Steakhouse Cocktails"
+        case timeAndPlace = "Time & A Place"
+        case loAndNoAlc = "Lo & No Alc"
+        case beersAndCider = "Beers & Cider"
+        
+        // Wine submenus
+        case champagneAndFizz = "Champagne & Fizz"
+        case whiteWines = "White Wines"
+        case reserveWhites = "Reserve Whites"
+        case redWines = "Red Wines"
+        case fineReds = "Fine Reds"
+        case reserveReds = "Reserve Reds"
+        case roseAndOrange = "Rosé & Orange"
+        case magnums = "Magnums"
+        case portAndSherry = "Port & Sherry"
+        case dessertWines = "Dessert Wines"
+        
+        var title: String {
+            return self.rawValue
+        }
+        
+        func belongsTo(option: MenuBarOptions) -> Bool {
+            switch option {
+            case .food:
+                return [.lunchDinner, .lunchSpecials, .puddings, .courses, .sundayRoast, .sharingMenu].contains(self)
+            case .cocktails:
+                return [.sacredSix, .ultimateSteakhouseCocktails, .timeAndPlace, .loAndNoAlc, .beersAndCider].contains(self)
+            case .wine:
+                return [.champagneAndFizz, .whiteWines, .reserveWhites, .redWines, .fineReds, .reserveReds, .roseAndOrange, .magnums, .portAndSherry, .dessertWines].contains(self)
+            }
+        }
+        
+        static func subMenu(for option: MenuBarOptions) -> [SubMenuOptions] {
+            switch option {
+            case .food:
+                return [.lunchDinner, .lunchSpecials, .puddings, .courses, .sundayRoast, .sharingMenu]
+            case .cocktails:
+                return [.sacredSix, .ultimateSteakhouseCocktails, .timeAndPlace, .loAndNoAlc, .beersAndCider]
+            case .wine:
+                return [.champagneAndFizz, .whiteWines, .reserveWhites, .redWines, .fineReds, .reserveReds, .roseAndOrange, .magnums, .portAndSherry, .dessertWines]
+            }
         }
     }
+
+struct MenuItem: Identifiable {
+    let id = UUID()
+    let name: String
+    let description: String
+    let price: String
 }
 
-struct SubSubMenu {
-    let title: String
-    let items: [FoodItem]
-}
-
-struct SubMenu {
-    let title: String
-    let subSubMenus: [SubSubMenu]
-}
-
-struct MainMenu {
-    let option: MenuBarOptions
-    let subMenus: [SubMenu]
+struct SubMenu: Identifiable {
+    let id = UUID()
+    let title: SubMenuOptions
+    let items: [MenuItem]
 }
 
 struct MenuData {
-    static let menus: [MainMenu] = [
-        MainMenu(
-            option: .food,
-            subMenus: [
-                SubMenu(
-                    title: "Lunch & Dinner",
-                    subSubMenus: [
-                        SubSubMenu(
-                            title: "Oysters",
-                            items: [
-                                FoodItem(title: "Natural", description: "", price: "21.00/42.00 (x6/x12)", imageName: ""),
-                                FoodItem(title: "Roasted with bone marrow", description: "", price: "11.50/23.00 (x3/x6)", imageName: ""),
-                                FoodItem(title: "Scotch bonnet mignonette", description: "", price: "10.75/21.50 (x3/x6)", imageName: ""),
-                                FoodItem(title: "Lemon and herb", description: "Fresh lemon and herbs", price: "15.00", imageName: ""),
-                                FoodItem(title: "Garlic butter", description: "Rich garlic butter sauce", price: "16.00", imageName: ""),
-                                FoodItem(title: "Chili lime", description: "Spicy chili lime dressing", price: "17.00", imageName: "")
-                            ]
-                        ),
-                        SubSubMenu(
-                            title: "Starters",
-                            items: [
-                                FoodItem(title: "Roasted scallops", description: "white port, garlic butter", price: "21.00", imageName: ""),
-                                FoodItem(title: "Hawksmoor smoked salmon", description: "Guinness bread", price: "15.00", imageName: ""),
-                                FoodItem(title: "Devon crab on toast", description: "cucumber salad", price: "18.00", imageName: ""),
-                                FoodItem(title: "Potted beef & bacon", description: "Yorkshires & onion gravy", price: "11.00", imageName: ""),
-                                FoodItem(title: "Fillet carpaccio", description: "pickled chestnut mushrooms, parmesan", price: "15.00", imageName: ""),
-                                FoodItem(title: "Bone marrow & onions", description: "sourdough toast", price: "11.00", imageName: ""),
-                                FoodItem(title: "Old Spot belly ribs", description: "vinegar slaw", price: "15.00", imageName: ""),
-                                FoodItem(title: "Bitter leaf salad", description: "Devon blue & candied pecans", price: "11.50", imageName: ""),
-                                FoodItem(title: "Summer salad", description: "peas, sugar snaps, cashew ricotta", price: "10.50/18.50", imageName: "")
-                            ]
-                        ),
-                        // Add more sub-sub-menus here...
-                    ]
-                ),
-                // Add more sub-menus here...
-            ]
-        ),
-        // Add more main menus here...
+    // Food items
+    static let lunchDinnerItems: [MenuItem] = [
+        MenuItem(name: "Natural", description: "(x6/x12)", price: "21.00/42.00"),
+        MenuItem(name: "Roasted with bone marrow", description: "(x3/x6)", price: "11.50/23.00"),
+        MenuItem(name: "Scotch bonnet mignonette", description: "(x3/x6)", price: "10.75/21.50")
     ]
+    
+    static let startersItems: [MenuItem] = [
+        MenuItem(name: "Roasted scallops", description: "white port, garlic butter", price: "21.00"),
+        MenuItem(name: "Hawksmoor smoked salmon", description: "Guinness bread", price: "15.00"),
+        MenuItem(name: "Devon crab on toast", description: "cucumber salad", price: "18.00"),
+        // Add more items here
+    ]
+    
+    static let mainsItems: [MenuItem] = [
+        MenuItem(name: "Whole native lobster", description: "garlic butter", price: "9.20/100g"),
+        MenuItem(name: "Roasted herb-fed chicken", description: "Béarnaise", price: "20.00"),
+        // Add more items here
+    ]
+    
+    static let lunchDinner = SubMenu(title: .lunchDinner, items: lunchDinnerItems)
+    static let starters = SubMenu(title: .lunchSpecials, items: startersItems)
+    static let mains = SubMenu(title: .puddings, items: mainsItems)
+    
+    static let foodSubMenus: [SubMenu] = [lunchDinner, starters, mains]
+    
+    // Cocktails items
+    static let sacredSixItems: [MenuItem] = [
+        MenuItem(name: "SHAKY PETE’S GINGER BREW", description: "Beefeater gin, Lemon juice, Ginger, London pride", price: "13.75"),
+        MenuItem(name: "DOUBLE MELON DAIQUIRI", description: "Havana Club 3 y.o, Cantaloupe, Sour Watermelon, Rose Wine", price: "13.75"),
+        MenuItem(name: "SOUR CHERRY NEGRONI", description: "East London Gin, Select Aperitivo, Regal Rogue Vermouth, Sour Cherry", price: "14.00"),
+        // Add more items here
+    ]
+    
+    static let ultimateSteakhouseCocktailsItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let timeAndPlaceItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let loAndNoAlcItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let beersAndCiderItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let sacredSix = SubMenu(title: .sacredSix, items: sacredSixItems)
+    static let ultimateSteakhouseCocktails = SubMenu(title: .ultimateSteakhouseCocktails, items: ultimateSteakhouseCocktailsItems)
+    static let timeAndPlace = SubMenu(title: .timeAndPlace, items: timeAndPlaceItems)
+    static let loAndNoAlc = SubMenu(title: .loAndNoAlc, items: loAndNoAlcItems)
+    static let beersAndCider = SubMenu(title: .beersAndCider, items: beersAndCiderItems)
+    
+    static let cocktailsSubMenus: [SubMenu] = [sacredSix, ultimateSteakhouseCocktails, timeAndPlace, loAndNoAlc, beersAndCider]
+    
+    // Wine items
+    static let champagneAndFizzItems: [MenuItem] = [
+        MenuItem(name: "Nino Franco, 'Rustico' Prosecco", description: "Italy, Veneto", price: "9.50"),
+        // Add more items here
+    ]
+    
+    static let whiteWinesItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let reserveWhitesItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let redWinesItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let fineRedsItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let reserveRedsItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let roseAndOrangeItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let magnumsItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let portAndSherryItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let dessertWinesItems: [MenuItem] = [
+        // Add items here
+    ]
+    
+    static let champagneAndFizz = SubMenu(title: .champagneAndFizz, items: champagneAndFizzItems)
+    static let whiteWines = SubMenu(title: .whiteWines, items: whiteWinesItems)
+    static let reserveWhites = SubMenu(title: .reserveWhites, items: reserveWhitesItems)
+    static let redWines = SubMenu(title: .redWines, items: redWinesItems)
+    static let fineReds = SubMenu(title: .fineReds, items: fineRedsItems)
+    static let reserveReds = SubMenu(title: .reserveReds, items: reserveRedsItems)
+    static let roseAndOrange = SubMenu(title: .roseAndOrange, items: roseAndOrangeItems)
+    static let magnums = SubMenu(title: .magnums, items: magnumsItems)
+    static let portAndSherry = SubMenu(title: .portAndSherry, items: portAndSherryItems)
+    static let dessertWines = SubMenu(title: .dessertWines, items: dessertWinesItems)
+    
+    static let wineSubMenus: [SubMenu] = [champagneAndFizz, whiteWines, reserveWhites, redWines, fineReds, reserveReds, roseAndOrange, magnums, portAndSherry, dessertWines]
 }

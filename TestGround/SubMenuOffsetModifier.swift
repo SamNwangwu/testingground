@@ -1,32 +1,31 @@
 //
-//  OffsetModifier.swift
+//  SubMenuOffsetModifier.swift
 //  TestGround
 //
-//  Created by User on 25/07/2024.
+//  Created by User on 26/07/2024.
 //
 
-import Foundation
 import SwiftUI
 
-struct OffsetModifier: ViewModifier {
-    let option: MenuBarOptions
-    @Binding var currentOption: MenuBarOptions
-    
+struct SubMenuOffsetModifier: ViewModifier {
+    let option: SubMenuOptions
+    @Binding var currentOption: SubMenuOptions
+
     func body(content: Content) -> some View {
         content
             .overlay(
                 GeometryReader { proxy in
                     Color.clear
-                        .preference(key: OffsetKey.self, value: proxy.frame(in: .named("scroll")))
+                        .preference(key: SubMenuOffsetKey.self, value: proxy.frame(in: .named("scroll")))
                 }
             )
-            .onPreferenceChange(OffsetKey.self) { proxy in
+            .onPreferenceChange(SubMenuOffsetKey.self) { proxy in
                 let offset = proxy.minY
                 withAnimation {
                     currentOption = (offset < 20 && -offset < (proxy.midX / 2) && currentOption != option)
                     ? option : currentOption
                 }
-                
             }
     }
 }
+
